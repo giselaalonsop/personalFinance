@@ -2,6 +2,7 @@ package com.gcode.personalFinance.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -15,9 +16,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/webhook", "/webhook/**").permitAll() // 🟢 sin login para Meta
-                        .anyRequest().denyAll() // 🔐 lo demás bloqueado
+                        .requestMatchers("/webhook", "/webhook/**").permitAll()
+                        .anyRequest().authenticated()
                 )
+                .httpBasic(Customizer.withDefaults()) // ← evita fallo por falta de auth config
                 .build();
     }
 }
