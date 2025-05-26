@@ -16,13 +16,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/webhook", "/webhook/**").permitAll() // 👈 permite el webhook
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/webhook").permitAll() // ✅ PERMITE /webhook sin login
                         .anyRequest().authenticated()
                 );
-
         return http.build();
     }
 
