@@ -1,5 +1,6 @@
 package com.gcode.personalFinance.config;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -25,4 +26,9 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }
+    @PostConstruct
+    public void logLoaded() {
+        System.out.println("✅ SecurityConfig CARGADO");
+    }
+
 }
